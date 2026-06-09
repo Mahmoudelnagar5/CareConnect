@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../booking/presentation/screens/booking_history_screen.dart';
 import 'alerts_tab,dart';
 import 'home_tab.dart';
 import 'profile_tab.dart';
@@ -48,7 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onOpenAlerts: () => _openAlerts(),
       ),
       ServicesTab(onBook: (_) => _openBooking()),
-      // const BookingHistoryScreen(),
+      const BookingHistoryScreen(),
       const ProfileTab(),
     ];
 

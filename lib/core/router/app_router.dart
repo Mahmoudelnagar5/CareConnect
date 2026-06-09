@@ -4,6 +4,7 @@ import '../../features/auth/presentation/bloc/auth_cubit.dart';
 import '../../features/auth/presentation/screens/forgot_password_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
+import '../../features/booking/presentation/screens/caregiver_list_screen.dart';
 import '../../features/dashboard/presentation/dashboard_screen.dart';
 import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
@@ -45,6 +46,7 @@ GoRouter buildRouter(AuthCubit authCubit) {
       GoRoute(path: AppRoutes.forgotPassword, builder: (_, _) => const ForgotPasswordScreen()),
       GoRoute(path: AppRoutes.dashboard, builder: (_, _) => const DashboardScreen()),
       GoRoute(path: AppRoutes.profile, builder: (_, _) => const ProfileScreen()),
+      GoRoute(path: AppRoutes.booking, builder: (context, state) => const CaregiverListScreen()),
     ],
   );
 }

@@ -25,6 +25,15 @@ import '../../features/profile/domain/repositories/profile_repository.dart';
 import '../../features/profile/domain/usecases/get_profile_usecase.dart';
 import '../../features/profile/domain/usecases/update_profile_usecase.dart';
 import '../../features/profile/presentation/bloc/profile_cubit.dart';
+import '../../features/booking/data/datasources/booking_remote_datasource.dart';
+import '../../features/booking/data/repositories/booking_repository_impl.dart';
+import '../../features/booking/domain/repositories/booking_repository.dart';
+import '../../features/booking/domain/usecases/booking_usecases.dart';
+import '../../features/booking/presentation/bloc/booking_history/booking_history_cubit.dart';
+import '../../features/booking/presentation/bloc/caregiver_list/caregiver_list_bloc.dart';
+import '../../features/booking/presentation/bloc/booking_flow/booking_flow_cubit.dart';
+import '../../features/booking/domain/usecases/get_caregivers.dart';
+import '../../features/booking/domain/entities/caregiver.dart';
 import '../network/dio_client.dart';
 
 final sl = GetIt.instance;
@@ -84,4 +93,26 @@ Future<void> initServiceLocator() async {
 
   // Profile - Presentation
   sl.registerFactory(() => ProfileCubit(getProfileUseCase: sl(), updateProfileUseCase: sl()));
+
+  // Booking - Data
+  sl.registerLazySingleton<BookingRemoteDataSource>(() => MockBookingRemoteDataSource());
+  sl.registerLazySingleton<BookingRepository>(() => BookingRepositoryImpl(sl()));
+
+  // Booking - Domain
+  sl.registerLazySingleton(() => GetBookings(sl()));
+  sl.registerLazySingleton(() => CancelBooking(sl()));
+  sl.registerLazySingleton(() => GetCaregivers(sl()));
+  sl.registerLazySingleton(() => GetAvailableSlots(sl()));
+  sl.registerLazySingleton(() => CreateBooking(sl()));
+
+  // Booking - Presentation
+  sl.registerFactory(() => BookingHistoryCubit(getBookings: sl(), cancelBooking: sl()));
+  sl.registerFactory(() => CaregiverListBloc(sl()));
+  sl.registerFactoryParam<BookingFlowCubit, Caregiver, void>(
+    (caregiver, _) => BookingFlowCubit(
+      getAvailableSlots: sl(),
+      createBooking: sl(),
+      caregiver: caregiver,
+    ),
+  );
 }
