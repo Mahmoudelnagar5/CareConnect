@@ -43,7 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
-            if (state.status == AuthStatus.failure) {
+            if (state.status == AuthStatus.authenticated) {
+              context.go(AppRoutes.dashboard);
+            } else if (state.status == AuthStatus.failure) {
               ScaffoldMessenger.of(context)
                 ..hideCurrentSnackBar()
                 ..showSnackBar(SnackBar(content: Text(state.errorMessage ?? 'Login failed')));

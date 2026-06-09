@@ -9,4 +9,7 @@ class AppRoutes {
   static const forgotPassword = '/forgot-password';
   static const dashboard = '/dashboard';
   static const profile = '/profile';
+
+  static const booking = '/booking';
+  static const bookingSuccess = '/booking/success';
 }

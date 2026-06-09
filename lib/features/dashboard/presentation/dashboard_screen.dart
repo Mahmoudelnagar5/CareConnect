@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
+import 'alerts_tab,dart';
 import 'home_tab.dart';
+import 'profile_tab.dart';
+import 'services_tab.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -15,18 +20,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _goToTab(int i) => setState(() => _index = i);
 
-  // void _openBooking() => context.push(AppRoutes.booking);
+  void _openBooking() => context.push(AppRoutes.booking);
 
-  // void _openAlerts() {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute<void>(
-  //       builder: (_) => Scaffold(
-  //         appBar: AppBar(title: const Text('Alerts')),
-  //         body: const AlertsTab(),
-  //       ),
-  //     ),
-  //   );
-  // }
+  void _openAlerts() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => Scaffold(
+          appBar: AppBar(title: const Text('Alerts')),
+          body: const AlertsTab(),
+        ),
+      ),
+    );
+  }
 
   void _openSupport() {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Support is available 24/7 at 1-800-CARE-NOW')));
@@ -36,15 +41,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final tabs = [
       HomeTab(
-        onBookNurse: () {},
+        onBookNurse: () => _openBooking(),
         onViewHistory: () => _goToTab(2),
         onViewRecords: () => _goToTab(2),
         onSupport: _openSupport,
-        onOpenAlerts: () {},
+        onOpenAlerts: () => _openAlerts(),
       ),
-      // ServicesTab(onBook: (_) => _openBooking()),
+      ServicesTab(onBook: (_) => _openBooking()),
       // const BookingHistoryScreen(),
-      // const ProfileTab(),
+      const ProfileTab(),
     ];
 
     return Scaffold(
