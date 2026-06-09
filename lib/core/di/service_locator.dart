@@ -30,7 +30,7 @@ import '../../features/booking/data/repositories/booking_repository_impl.dart';
 import '../../features/booking/domain/repositories/booking_repository.dart';
 import '../../features/booking/domain/usecases/booking_usecases.dart';
 import '../../features/booking/presentation/bloc/booking_history/booking_history_cubit.dart';
-import '../../features/booking/presentation/bloc/caregiver_list/caregiver_list_bloc.dart';
+import '../../features/booking/presentation/bloc/caregiver_list/caregiver_list_cubit.dart';
 import '../../features/booking/presentation/bloc/booking_flow/booking_flow_cubit.dart';
 import '../../features/booking/domain/usecases/get_caregivers.dart';
 import '../../features/booking/domain/entities/caregiver.dart';
@@ -107,12 +107,8 @@ Future<void> initServiceLocator() async {
 
   // Booking - Presentation
   sl.registerFactory(() => BookingHistoryCubit(getBookings: sl(), cancelBooking: sl()));
-  sl.registerFactory(() => CaregiverListBloc(sl()));
+  sl.registerFactory(() => CaregiverListCubit(sl()));
   sl.registerFactoryParam<BookingFlowCubit, Caregiver, void>(
-    (caregiver, _) => BookingFlowCubit(
-      getAvailableSlots: sl(),
-      createBooking: sl(),
-      caregiver: caregiver,
-    ),
+    (caregiver, _) => BookingFlowCubit(getAvailableSlots: sl(), createBooking: sl(), caregiver: caregiver),
   );
 }

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/state_view.dart';
+import '../../../../core/widgets/user_avatar.dart';
 import '../../../auth/presentation/bloc/auth_cubit.dart';
 import '../bloc/profile_cubit.dart';
 import '../bloc/profile_state.dart';
@@ -101,17 +101,14 @@ class _Avatar extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       children: [
-        CircleAvatar(
+        UserAvatar(
+          imageProfile: user.imageProfile as String?,
+          initials: user.initials as String,
           radius: 48,
-          backgroundColor: AppColors.primaryLight,
-          backgroundImage: user.imageProfile != null ? CachedNetworkImageProvider(user.imageProfile!) : null,
-          child: user.imageProfile == null
-              ? Text(user.initials, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w600, color: AppColors.primary))
-              : null,
         ),
         const SizedBox(height: AppSpacing.md),
-        Text(user.name, style: theme.textTheme.headlineSmall),
-        Text(user.email, style: theme.textTheme.bodyMedium),
+        Text(user.name as String, style: theme.textTheme.headlineSmall),
+        Text(user.email as String, style: theme.textTheme.bodyMedium),
       ],
     );
   }

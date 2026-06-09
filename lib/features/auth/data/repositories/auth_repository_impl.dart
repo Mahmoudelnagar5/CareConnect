@@ -42,9 +42,10 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
     required String phone,
     required String password,
+    String? imageFilePath,
   }) async {
     try {
-      final result = await remote.register(name: name, email: email, phone: phone, password: password);
+      final result = await remote.register(name: name, email: email, phone: phone, password: password, imageFilePath: imageFilePath);
       await local.cacheSession(token: result.token, user: result.user);
       dioClient.setAuthToken(result.token);
       return Right(result.user);

@@ -5,6 +5,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/status_badge.dart';
+import '../../../core/widgets/user_avatar.dart';
 import '../../auth/presentation/bloc/auth_cubit.dart';
 import 'widgets/quick_actions_row.dart';
 
@@ -93,14 +94,7 @@ class _HomeHeader extends StatelessWidget {
         final initials = state.user?.initials ?? 'U';
         return Row(
           children: [
-            CircleAvatar(
-              radius: 26,
-              backgroundColor: AppColors.primaryLight,
-              child: Text(
-                initials,
-                style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700),
-              ),
-            ),
+            UserAvatar(imageProfile: state.user?.imageProfile, initials: initials, radius: 26),
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(

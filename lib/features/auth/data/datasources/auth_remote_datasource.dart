@@ -15,6 +15,7 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String phone,
     required String password,
+    String? imageFilePath,
   });
 
   Future<void> forgotPassword({required String email});
@@ -66,6 +67,7 @@ class MockAuthRemoteDataSource implements AuthRemoteDataSource {
     required String email,
     required String phone,
     required String password,
+    String? imageFilePath,
   }) async {
     await Future<void>.delayed(AppConfig.mockLatency);
     if (password.length < 6) {
@@ -78,6 +80,7 @@ class MockAuthRemoteDataSource implements AuthRemoteDataSource {
         name: name,
         email: email,
         phone: phone,
+        imageProfile: imageFilePath,
       ),
     );
   }

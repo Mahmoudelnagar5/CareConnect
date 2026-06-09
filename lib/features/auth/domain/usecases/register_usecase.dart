@@ -12,15 +12,17 @@ class RegisterParams extends Equatable {
     required this.email,
     required this.phone,
     required this.password,
+    this.imageFilePath,
   });
 
   final String name;
   final String email;
   final String phone;
   final String password;
+  final String? imageFilePath;
 
   @override
-  List<Object?> get props => [name, email, phone, password];
+  List<Object?> get props => [name, email, phone, password, imageFilePath];
 }
 
 class RegisterUseCase implements UseCase<User, RegisterParams> {
@@ -34,6 +36,7 @@ class RegisterUseCase implements UseCase<User, RegisterParams> {
       email: params.email,
       phone: params.phone,
       password: params.password,
+      imageFilePath: params.imageFilePath,
     );
   }
 }

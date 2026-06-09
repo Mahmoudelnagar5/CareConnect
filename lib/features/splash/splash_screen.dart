@@ -15,17 +15,31 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
   @override
   void initState() {
     super.initState();
-    _start();
+    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    _controller.addListener(() => setState(() {}));
+    _controller.addStatusListener(_onAnimationEnd);
+    _controller.forward();
   }
 
-  Future<void> _start() async {
-    await Future.delayed(const Duration(milliseconds: 800));
-    if (!mounted) return;
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
+  void _onAnimationEnd(AnimationStatus status) {
+    if (status != AnimationStatus.completed) return;
+    _navigate();
+  }
+
+  Future<void> _navigate() async {
+    if (!mounted) return;
     try {
       final prefs = await SharedPreferences.getInstance();
       final onboardingDone = prefs.getBool('cc_onboarding_done') ?? false;
@@ -74,7 +88,14 @@ class _SplashScreenState extends State<SplashScreen> {
               const SizedBox(height: AppSpacing.sm),
               const Text('Certified home-care nursing', style: TextStyle(color: Color(0xFFCFE0FB), fontSize: 14)),
               const SizedBox(height: AppSpacing.huge),
-              const SizedBox(height: 28, width: 28, child: CircularProgressIndicator(strokeWidth: 2.6, color: Colors.white)),
+              SizedBox(
+                width: 160,
+                child: LinearProgressIndicator(
+                  value: _controller.value,
+                  backgroundColor: const Color(0xFF3A6CB5),
+                  color: Colors.white,
+                ),
+              ),
               const SizedBox(height: AppSpacing.xxxl),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

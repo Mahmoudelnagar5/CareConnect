@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/router/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/utils/image_utils.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/widgets/user_avatar.dart';
 import '../bloc/auth_cubit.dart';
 import '../widgets/app_text_field.dart';
 
@@ -23,6 +26,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _phone = TextEditingController();
   final _password = TextEditingController();
   final _confirm = TextEditingController();
+  final _picker = ImagePicker();
+  String? _imagePath;
   bool _obscure = true;
   bool _terms = false;
 
@@ -36,6 +41,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    final xfile = await _picker.pickImage(source: ImageSource.gallery, maxWidth: 512, maxHeight: 512);
+    if (xfile != null) {
+      final bytes = await xfile.readAsBytes();
+      final mime = xfile.mimeType ?? 'image/jpeg';
+      final dataUri = bytesToBase64Image(bytes, mime);
+      setState(() => _imagePath = dataUri);
+    }
+  }
+
   void _submit() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
     if (!_terms) {
@@ -47,6 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       email: _email.text.trim(),
       phone: _phone.text.trim(),
       password: _password.text,
+      imageFilePath: _imagePath,
     );
   }
 
@@ -79,6 +95,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(height: AppSpacing.sm),
                     Text('Create an account to book certified nurses at home.', style: theme.textTheme.bodyMedium),
                     const SizedBox(height: AppSpacing.xxl),
+                    Center(
+                      child: UserAvatar(
+                        imageProfile: _imagePath,
+                        initials: _name.text.isNotEmpty
+                            ? _name.text.trim().split(' ').first.characters.first.toUpperCase()
+                            : '?',
+                        radius: 48,
+                        onTap: _pickImage,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    Center(
+                      child: TextButton.icon(
+                        onPressed: _pickImage,
+                        icon: const Icon(Icons.camera_alt_outlined, size: 18),
+                        label: const Text('Add profile photo'),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
                     AppTextField(
                       label: 'Full name',
                       controller: _name,

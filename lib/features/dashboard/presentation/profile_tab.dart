@@ -1,10 +1,14 @@
-import 'package:care_connect_app/features/auth/presentation/bloc/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
+import '../../../core/utils/image_utils.dart';
 import '../../../core/widgets/app_card.dart';
+import '../../../core/widgets/user_avatar.dart';
+import '../../auth/presentation/bloc/auth_cubit.dart';
+import '../../profile/presentation/bloc/profile_cubit.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -106,13 +110,11 @@ class _ProfileHeader extends StatelessWidget {
         return AppCard(
           child: Row(
             children: [
-              CircleAvatar(
+              UserAvatar(
+                imageProfile: user?.imageProfile,
+                initials: user?.initials ?? 'U',
                 radius: 32,
-                backgroundColor: AppColors.primaryLight,
-                child: Text(
-                  user?.initials ?? 'U',
-                  style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700, fontSize: 22),
-                ),
+                onTap: () => _pickImage(context),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
@@ -133,13 +135,65 @@ class _ProfileHeader extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => _showEditDialog(context, user),
                 icon: const Icon(Icons.edit_outlined, color: AppColors.primary),
               ),
             ],
           ),
         );
       },
+    );
+  }
+
+  Future<void> _pickImage(BuildContext context) async {
+    final xfile = await ImagePicker().pickImage(source: ImageSource.gallery, maxWidth: 512, maxHeight: 512);
+    if (xfile == null) return;
+    final user = context.read<AuthCubit>().state.user;
+    if (user == null) return;
+    final bytes = await xfile.readAsBytes();
+    final mime = xfile.mimeType ?? 'image/jpeg';
+    final dataUri = bytesToBase64Image(bytes, mime);
+    final updated = user.copyWith(imageProfile: dataUri);
+    final error = await context.read<ProfileCubit>().updateProfile(updated);
+    if (context.mounted) {
+      context.read<AuthCubit>().updateUser(updated);
+      if (error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+      }
+    }
+  }
+
+  void _showEditDialog(BuildContext context, dynamic user) {
+    if (user == null) return;
+    final nameCtl = TextEditingController(text: user.name);
+    final phoneCtl = TextEditingController(text: user.phone);
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Edit profile'),
+        content: TextField(
+          controller: nameCtl,
+          decoration: const InputDecoration(labelText: 'Full name'),
+          textCapitalization: TextCapitalization.words,
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          FilledButton(
+            onPressed: () async {
+              final name = nameCtl.text.trim();
+              final phone = phoneCtl.text.trim();
+              if (name.isEmpty) return;
+              Navigator.pop(ctx);
+              final updated = user.copyWith(name: name, phone: phone);
+              final error = await context.read<ProfileCubit>().updateProfile(updated);
+              if (error == null && context.mounted) {
+                context.read<AuthCubit>().updateUser(updated);
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
     );
   }
 }

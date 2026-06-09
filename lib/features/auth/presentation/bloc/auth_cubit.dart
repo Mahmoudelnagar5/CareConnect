@@ -49,13 +49,17 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> register({required String name, required String email, required String phone, required String password}) async {
+  Future<void> register({required String name, required String email, required String phone, required String password, String? imageFilePath}) async {
     emit(state.copyWith(status: AuthStatus.loading));
-    final result = await _register(RegisterParams(name: name, email: email, phone: phone, password: password));
+    final result = await _register(RegisterParams(name: name, email: email, phone: phone, password: password, imageFilePath: imageFilePath));
     result.fold(
       (failure) => emit(state.copyWith(status: AuthStatus.failure, errorMessage: failure.message)),
       (user) => emit(AuthState(status: AuthStatus.authenticated, user: user)),
     );
+  }
+
+  void updateUser(User user) {
+    emit(state.copyWith(user: user));
   }
 
   Future<String?> forgotPassword({required String email}) async {

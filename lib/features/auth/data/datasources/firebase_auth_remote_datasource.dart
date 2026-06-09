@@ -28,17 +28,20 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
   }
 
   @override
+  @override
   Future<({String token, UserModel user})> register({
     required String name,
     required String email,
     required String phone,
     required String password,
+    String? imageFilePath,
   }) async {
     try {
       final credential = await _auth.createUserWithEmailAndPassword(email: email.trim(), password: password);
       await credential.user?.updateDisplayName(name);
       await credential.user?.reload();
-      final session = await _sessionFrom(_auth.currentUser ?? credential.user, nameOverride: name, phoneOverride: phone);
+      final user = _auth.currentUser ?? credential.user;
+      final session = await _sessionFrom(user, nameOverride: name, phoneOverride: phone, imageOverride: imageFilePath);
       await _saveUserToFirestore(session.user);
       return session;
     } on fb.FirebaseAuthException catch (e) {
@@ -47,6 +50,8 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
       throw const AuthException('Unable to create your account. Please try again.');
     }
   }
+
+
 
   @override
   Future<void> forgotPassword({required String email}) async {
@@ -107,7 +112,7 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
     }
   }
 
-  Future<({String token, UserModel user})> _sessionFrom(fb.User? user, {String? nameOverride, String? phoneOverride}) async {
+  Future<({String token, UserModel user})> _sessionFrom(fb.User? user, {String? nameOverride, String? phoneOverride, String? imageOverride}) async {
     if (user == null) {
       throw const AuthException('No authenticated user was returned.');
     }
@@ -119,7 +124,7 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
         name: nameOverride ?? user.displayName ?? '',
         email: user.email ?? '',
         phone: phoneOverride ?? user.phoneNumber ?? '',
-        imageProfile: user.photoURL,
+        imageProfile: imageOverride ?? user.photoURL,
       ),
     );
   }

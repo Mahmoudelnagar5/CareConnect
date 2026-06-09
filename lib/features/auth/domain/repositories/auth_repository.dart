@@ -15,6 +15,7 @@ abstract class AuthRepository {
     required String email,
     required String phone,
     required String password,
+    String? imageFilePath,
   });
 
   Future<Either<Failure, Unit>> forgotPassword({required String email});

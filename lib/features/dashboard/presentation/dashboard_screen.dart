@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/di/service_locator.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../booking/presentation/screens/booking_history_screen.dart';
-import 'alerts_tab,dart';
+import '../../profile/presentation/bloc/profile_cubit.dart';
+import 'alerts_tab.dart';
 import 'home_tab.dart';
 import 'profile_tab.dart';
 import 'services_tab.dart';
@@ -18,6 +21,13 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   int _index = 0;
+  final _profileCubit = sl<ProfileCubit>();
+
+  @override
+  void dispose() {
+    _profileCubit.close();
+    super.dispose();
+  }
 
   void _goToTab(int i) => setState(() => _index = i);
 
@@ -54,7 +64,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     ];
 
     return Scaffold(
-      body: IndexedStack(index: _index, children: tabs),
+      body: BlocProvider.value(
+        value: _profileCubit,
+        child: IndexedStack(index: _index, children: tabs),
+      ),
       bottomNavigationBar: _DashboardNavBar(currentIndex: _index, onTap: _goToTab),
     );
   }
