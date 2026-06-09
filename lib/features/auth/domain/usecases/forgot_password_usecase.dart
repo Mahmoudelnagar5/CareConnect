@@ -1,0 +1,24 @@
+import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
+
+import '../../../../core/error/failures.dart';
+import '../../../../core/usecase/usecase.dart';
+import '../repositories/auth_repository.dart';
+
+class ForgotPasswordParams extends Equatable {
+  const ForgotPasswordParams({required this.email});
+  final String email;
+
+  @override
+  List<Object?> get props => [email];
+}
+
+class ForgotPasswordUseCase implements UseCase<Unit, ForgotPasswordParams> {
+  const ForgotPasswordUseCase(this._repository);
+  final AuthRepository _repository;
+
+  @override
+  Future<Either<Failure, Unit>> call(ForgotPasswordParams params) {
+    return _repository.forgotPassword(email: params.email);
+  }
+}
