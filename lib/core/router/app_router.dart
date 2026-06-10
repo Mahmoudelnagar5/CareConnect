@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/bloc/auth_cubit.dart';
@@ -16,6 +19,8 @@ final _publicRoutes = {AppRoutes.splash, AppRoutes.onboarding, AppRoutes.login, 
 GoRouter buildRouter(AuthCubit authCubit) {
   return GoRouter(
     initialLocation: AppRoutes.splash,
+    refreshListenable: _GoRouterRefreshStream(authCubit.stream),
+
     redirect: (context, state) {
       final status = authCubit.state.status;
       final location = state.matchedLocation;
@@ -49,4 +54,20 @@ GoRouter buildRouter(AuthCubit authCubit) {
       GoRoute(path: AppRoutes.booking, builder: (context, state) => const CaregiverListScreen()),
     ],
   );
+}
+
+// re-evaluates its redirect logic whenever auth state changes.
+class _GoRouterRefreshStream extends ChangeNotifier {
+  _GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 }

@@ -7,8 +7,8 @@ import 'auth_remote_datasource.dart';
 
 class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
   FirebaseAuthRemoteDataSource({fb.FirebaseAuth? auth, FirebaseFirestore? firestore})
-      : _auth = auth ?? fb.FirebaseAuth.instance,
-        _firestore = firestore ?? FirebaseFirestore.instance;
+    : _auth = auth ?? fb.FirebaseAuth.instance,
+      _firestore = firestore ?? FirebaseFirestore.instance;
 
   final fb.FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
@@ -51,8 +51,6 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
     }
   }
 
-
-
   @override
   Future<void> forgotPassword({required String email}) async {
     try {
@@ -75,7 +73,7 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
     }
   }
 
-  Future<void> logout() => _auth.signOut();
+  Future<void> logout() async => await _auth.signOut();
 
   Future<({String token, UserModel user})?> currentSession() async {
     final user = _auth.currentUser;
@@ -112,7 +110,12 @@ class FirebaseAuthRemoteDataSource implements AuthRemoteDataSource {
     }
   }
 
-  Future<({String token, UserModel user})> _sessionFrom(fb.User? user, {String? nameOverride, String? phoneOverride, String? imageOverride}) async {
+  Future<({String token, UserModel user})> _sessionFrom(
+    fb.User? user, {
+    String? nameOverride,
+    String? phoneOverride,
+    String? imageOverride,
+  }) async {
     if (user == null) {
       throw const AuthException('No authenticated user was returned.');
     }

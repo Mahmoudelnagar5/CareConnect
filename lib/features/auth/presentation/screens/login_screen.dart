@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _email = TextEditingController(text: '');
   final _password = TextEditingController(text: '');
   bool _obscure = true;
-  bool _remember = true;
+  // final bool _remember = true;
 
   @override
   void dispose() {
@@ -95,14 +95,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Row(
-                          children: [
-                            Checkbox(value: _remember, onChanged: (v) => setState(() => _remember = v ?? false)),
-                            const Text('Remember me'),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Checkbox(value: _remember, onChanged: (v) => setState(() => _remember = v ?? false)),
+                        //     const Text('Remember me'),
+                        //   ],
+                        // ),
                         TextButton(onPressed: () => context.push(AppRoutes.forgotPassword), child: const Text('Forgot password?')),
                       ],
                     ),
@@ -118,11 +118,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           : const Text('Sign In'),
                     ),
                     const SizedBox(height: AppSpacing.lg),
-                    OutlinedButton.icon(
-                      onPressed: loading ? null : _submit,
-                      icon: const Icon(Icons.fingerprint),
-                      label: const Text('Sign in with biometrics'),
-                    ),
+                    // OutlinedButton.icon(
+                    //   onPressed: loading ? null : _submit,
+                    //   icon: const Icon(Icons.fingerprint),
+                    //   label: const Text('Sign in with biometrics'),
+                    // ),
                     const SizedBox(height: AppSpacing.xxl),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,5 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -22,10 +21,7 @@ void main() async {
   runApp(
     BlocProvider.value(
       value: authCubit,
-      child: DevicePreview(
-        enabled: kDebugMode,
-        builder: (context) => CareConnectApp(router: router),
-      ),
+      child: DevicePreview(enabled: false, builder: (context) => CareConnectApp(router: router)),
     ),
   );
 }

@@ -64,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       listener: (context, state) {
         if (state.status == AuthStatus.authenticated) {
           context.go(AppRoutes.dashboard);
-        } else if (state.status == AuthStatus.failure) {
+        } else if (state.status == AuthStatus.failure || state.status == AuthStatus.unauthenticated) {
           context.go(AppRoutes.login);
         }
       },

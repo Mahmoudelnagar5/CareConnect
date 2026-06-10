@@ -42,12 +42,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _pickImage() async {
-    final xfile = await _picker.pickImage(source: ImageSource.gallery, maxWidth: 512, maxHeight: 512);
-    if (xfile != null) {
-      final bytes = await xfile.readAsBytes();
-      final mime = xfile.mimeType ?? 'image/jpeg';
-      final dataUri = bytesToBase64Image(bytes, mime);
-      setState(() => _imagePath = dataUri);
+    try {
+      final xfile = await _picker.pickImage(source: ImageSource.gallery, maxWidth: 512, maxHeight: 512);
+      if (xfile != null) {
+        final bytes = await xfile.readAsBytes();
+        final mime = xfile.mimeType ?? 'image/jpeg';
+        final dataUri = bytesToBase64Image(bytes, mime);
+        if (mounted) setState(() => _imagePath = dataUri);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to pick image: $e')));
+      }
     }
   }
 
@@ -98,8 +104,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Center(
                       child: UserAvatar(
                         imageProfile: _imagePath,
-                        initials: _name.text.isNotEmpty
-                            ? _name.text.trim().split(' ').first.characters.first.toUpperCase()
+                        initials: _name.text.trim().isNotEmpty
+                            ? _name.text.trim().characters.first.toUpperCase()
                             : '?',
                         radius: 48,
                         onTap: _pickImage,
