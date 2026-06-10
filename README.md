@@ -63,18 +63,41 @@ A beautiful, feature-rich home-care nursing booking application built with Flutt
 
 ---
 
-## 📱 Screenshots
+## 📱 Screenshots & Demo
 
-<div align="center">
+### 🎥 Demo Video
 
-<!-- Add screenshots here -->
-<!-- ![Onboarding](screenshots/onboarding.png)
-![Login](screenshots/login.png)
-![Dashboard](screenshots/dashboard.png)
-![Caregivers](screenshots/caregivers.png)
-![Booking](screenshots/booking.png) -->
+https://github.com/user-attachments/assets/0ee78ae7-2a2e-4ebc-97dd-30392d139d25
 
-</div>
+### 📸 Screenshots
+
+<table>
+  <tr>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/18c737ae-9574-410e-af9e-68d3b6d73b35" /></td>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/6a1894c7-60e3-4310-af91-6b220e705f37" /></td>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/2b82a237-4387-4ba5-afc4-9073850fdb2b" /></td>
+  </tr>
+  <tr>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/3cfd168d-a69f-4993-948e-13fe667ff915" /></td>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/3d6ab1d0-c58e-440b-bc32-1647ebad64fe" /></td>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/806d54a7-1c6b-4b2b-9ecc-f91c14ffe807" /></td>
+  </tr>
+  <tr>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/f144be3d-0faa-4cee-b777-7e5ac7fcdc99" /></td>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/43a8fe73-8d8f-4e63-bcc6-5d499d1d3cf0" /></td>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/60a49645-bf7f-4917-8526-7f5b2d255191" /></td>
+  </tr>
+  <tr>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/96b6836d-10f3-4818-a990-57409f9a24e6" /></td>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/763088f5-6433-465f-b559-d56060448955" /></td>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/7e3e0bb3-e0e9-4073-9bcd-f98b2383cc9e" /></td>
+  </tr>
+  <tr>
+    <td><img width="250" alt="Image" src="https://github.com/user-attachments/assets/ffe34975-c8fe-43f3-8623-0b06a7874e5b" /></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
 
 ---
 
